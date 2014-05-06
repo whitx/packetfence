@@ -2919,6 +2919,16 @@ sub extractVLAN {
     return;
 }
 
+=item handleTrap 
+
+=cut
+
+sub handleTrap {
+    my ($this,$trapInfo,$oids) = @_;
+    my $logger = get_logger();
+    $logger->debug("trap ignored, not useful for switch");
+}
+
 =item parseRequest
 
 Takes FreeRADIUS' RAD_REQUEST hash and process it to return
