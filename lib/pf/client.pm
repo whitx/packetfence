@@ -1,13 +1,13 @@
-package pf::api::client;
+package pf::client;
 
 =head1 NAME
 
-pf::api::client
+pf::client
 
 =head1 SYNOPSIS
 
-  use pf::api::client;
-  my $client = pf::api::client->new;
+  use pf::client;
+  my $client = pf::client->new;
   my @args = $client->call("echo","packet","fence");
 
   $client->notify("echo","packet","fence");
@@ -15,7 +15,7 @@ pf::api::client
 
 =head1 DESCRIPTION
 
-  pf::api::client is the base class for the pf http rpc client
+  pf::client is the base class for the pf http rpc client
 
 =cut
 
