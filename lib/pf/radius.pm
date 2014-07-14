@@ -167,9 +167,6 @@ sub authorize {
         return [ $RADIUS::RLM_MODULE_OK, ('Reply-Message' => "Switch is not in production, so we allow this request") ];
     }
 
-    # Extract the realm
-    my $realm = $radius_request->{'Realm'};
-
     # Fetch VLAN depending on node status
     my ($vlan, $wasInline, $user_role) = $vlan_obj->fetchVlanForNode($mac, $switch, $port, $connection_type, $user_name, $ssid, $radius_request, $realm);
 
@@ -184,7 +181,7 @@ sub authorize {
     #closes old locationlog entries and create a new one if required
     #TODO: Better deal with INLINE RADIUS
     $switch->synchronize_locationlog($port, $vlan, $mac,
-        $isPhone ? $VOIP : $NO_VOIP, $connection_type, $user_name, $ssid
+        $isPhone ? $VOIP : $NO_VOIP, $connection_type, $user_name, $ssid, $stripped_user_name, $realm
     ) if (!$wasInline);
 
     # does the switch support Dynamic VLAN Assignment, bypass if using Inline

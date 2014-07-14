@@ -389,13 +389,24 @@ sub getNormalVlan {
         };
         if (defined($realm)) {
             $role = &pf::authentication::match(&pf::authentication::getInternalAuthenticationSources($realm), $params, $Actions::SET_ROLE);
-            $value = &pf::authentication::match(&pf::authentication::getInternalAuthenticationSources($realm), $params, $Actions::SET_ACCESS_DURATION);
-            if (defined $value) {
-                $logger->trace("No unregdate found - computing it from access duration");
-                $value = access_duration($value);
-            }
-            else {
-                $value = &pf::authentication::match(&pf::authentication::getInternalAuthenticationSources($realm), $params, $Actions::SET_UNREG_DATE);
+            my $value = &pf::authentication::match(&pf::authentication::getInternalAuthenticationSources($realm), $params, $Actions::SET_ACCESS_DURATION);
+            if (isenabled($node_info->{'autoreg'})) {
+                if (defined $value) {
+                    $logger->trace("No unregdate found - computing it from access duration");
+                    $value = access_duration($value);
+                }
+                else {
+                    $value = &pf::authentication::match(&pf::authentication::getInternalAuthenticationSources($realm), $params, $Actions::SET_UNREG_DATE);
+                }
+                if (defined $value) {
+                    my %info = (
+                        'unregdate' => $value,
+                    );
+                    if (defined $role) {
+                        %info = (%info, (category => $role));
+                    }
+                    node_modify($mac,%info);
+                }
             }
         } elsif(!defined($role)) {
             $role = &pf::authentication::match([@sources], $params, $Actions::SET_ROLE);
@@ -412,7 +423,6 @@ sub getNormalVlan {
                 if (defined $value) {
                     my %info = (
                         'unregdate' => $value,
-                        'category' => $role,
                         'autoreg' => 'yes',
                     );
                     if (defined $role) {
