@@ -1,49 +1,39 @@
-package pfappserver::Form::Authentication::Source::RADIUS;
+package pfappserver::Form::Config::Realm;
 
 =head1 NAME
 
-pfappserver::Form::Authentication::Source::RADIUS - Web form for a Kerberos user source
+pfappserver::Form::Config::Realm - Web form for a floating device
 
 =head1 DESCRIPTION
 
-Form definition to create or update a RADIUS user source.
+Form definition to create or update realm.
 
 =cut
 
 use HTML::FormHandler::Moose;
-extends 'pfappserver::Form::Authentication::Source';
+extends 'pfappserver::Base::Form';
+with 'pfappserver::Base::Form::Role::Help';
 
-# Form fields
-has_field 'host' =>
+use pf::config;
+use pf::util;
+
+## Definition
+has_field 'id' =>
   (
    type => 'Text',
-   label => 'Host',
-   element_class => ['input-small'],
-   element_attr => {'placeholder' => '127.0.0.1'},
-  );
-has_field 'port' =>
-  (
-   type => 'PosInteger',
-   label => 'Port',
-   element_class => ['input-mini'],
-   element_attr => {'placeholder' => '1812'},
-  );
-has_field 'secret' =>
-  (
-   type => 'Password',
-   label => 'Secret',
+   label => 'Realm',
    required => 1,
+   messages => { required => 'Please specify a Realm' },
   );
-has_field 'stripped_user_name' => (
-    type            => 'Toggle',
-    checkbox_value  => 1,
-    unchecked_value => 0,
-    default         => 1,
-    label           => 'Use stripped username',
-);
+
+
+=over
+
+=back
+
 =head1 COPYRIGHT
 
-Copyright (C) 2012 Inverse inc.
+Copyright (C) 2013 Inverse inc.
 
 =head1 LICENSE
 

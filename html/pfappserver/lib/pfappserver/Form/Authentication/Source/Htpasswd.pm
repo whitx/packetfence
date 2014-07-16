@@ -21,12 +21,13 @@ has_field 'path' =>
    required => 1,
    element_class => ['input-xxlarge'],
   );
-has_field 'realm' =>
-  (
-   type => 'Text',
-   label => 'Realm',
-  );
-
+has_field 'stripped_user_name' => (
+    type            => 'Toggle',
+    checkbox_value  => 1,
+    unchecked_value => 0,
+    default         => 1,
+    label           => 'Use stripped username',
+);
 =head2 validate
 
 Make sure the htpasswd file is readable.
