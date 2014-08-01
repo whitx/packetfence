@@ -35,7 +35,6 @@ use pf::log;
 use pf::util::radius qw(perform_disconnect);
 use List::MoreUtils qw(any all);
 use Scalar::Util qw(looks_like_number);
-use List::MoreUtils qw(any);
 
 =head1 SUBROUTINES
 
@@ -2919,26 +2918,6 @@ sub extractVLAN {
     return;
 }
 
-=item parseReceivedFrom
-
-=cut
-
-sub parseReceivedFrom {
-    my ($self,$trapInfo) = @_;
-    $trapInfo->{receivedfrom} =~ m/
-    (?:UDP:\ \[)?                                       # Optional "UDP: [" (since v2 traps I think)
-    (\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})                # network device ip address
-    (?:\]:(\d+))?                                         # Optional "]:port" (since v2 traps I think)
-    (?:\-\>\[(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\])?     # Optional "->[ip address]" (since net-snmp 5.4)
-    /x;
-    my $receivedFromData = {
-        networkDeviceIp => $1,
-        port => $2,
-        optIpAddress => $3,
-    };
-    return $receivedFromData;
-}
-
 =item parseRequest
 
 Takes FreeRADIUS' RAD_REQUEST hash and process it to return
@@ -3008,7 +2987,7 @@ sub parseSwitchIdFromRequest {
     return;
 }
 
-=item * _identifyConnectionType
+=item _identifyConnectionType
 
 Identify the connection type based information provided by RADIUS call
 
@@ -3061,21 +3040,16 @@ sub _identifyConnectionType {
     }
 }
 
-=item parseTrap
+=item trapOidSupported
 
-Unimplemented base method meant to be overriden in switches that support SNMP trap based methods.
+verifies if OID is supported by the switch
 
-=cut 
+=cut
 
-sub parseTrap {
-    my $self   = shift;
-    my $logger = Log::Log4perl::get_logger( ref($self) );
-    $logger->warn("SNMP trap handling not implemented for this type of switch.");
-    return undef;
-}
-
+sub trapOidSupported { 0 }
 
 =back
+
 =head1 AUTHOR
 
 Inverse inc. <info@inverse.ca>
