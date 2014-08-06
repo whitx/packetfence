@@ -162,8 +162,10 @@ Services managed by PacketFence:
   pfdhcplistener   | PF DHCP monitoring daemon
   pfdns            | DNS daemon
   pfmon            | PF ARP monitoring daemon
+  pfqueue          | PF queue handling daemon
   pfsetvlan        | PF VLAN isolation daemon
   radiusd          | FreeRADIUS daemon
+  redis            | Redis daemon
   snmptrapd        | SNMP trap receiver daemon
   snort            | Sourcefire Snort IDS
   suricata         | Suricata IDS
