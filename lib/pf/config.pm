@@ -653,6 +653,7 @@ sub readPfConfigFiles {
                         )
                     ];
                 }
+                $Config{captive_portal}{detection_urls} = [split(/\s*,\s*/,$Config{captive_portal}{detection_urls} || '') ];
 
                 _load_captive_portal();
             }]
