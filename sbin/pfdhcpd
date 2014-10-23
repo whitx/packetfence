@@ -546,9 +546,9 @@ sub calc_ip {
             } else {
                 $ip_last = $ip_last + 1;
                 if ($ip_last->addr eq $broadcast->addr()) {
-                    $ip_last = $ip_last +2;
+                    $ip_last = $ip_last + 2;
                 } elsif ($ip_last->addr eq $network->addr()) {
-                    $ip_last = $ip_last +1;
+                    $ip_last = $ip_last + 1;
                 }
             }
             if ($ip_last->addr eq $lease{$net_addr->addr}) {
@@ -557,12 +557,12 @@ sub calc_ip {
             }
         }
     } else {
-        $ip_last = $dhcp_config->{'dhcp_start'};
+        $ip_last = NetAddr::IP->new($dhcp_config->{'dhcp_start'},$dhcp_config->{'netmask'});
     }
     # Keep the last assign address
-    $lease{$net_addr->addr} = $ip_last;
-    update_iplog( $mac, $ip_last, $dhcp_config->{'dhcp_max_lease_time'} );
-    return $ip_last;
+    $lease{$net_addr->addr} = $ip_last->addr;
+    update_iplog( $mac, $ip_last->addr, $dhcp_config->{'dhcp_max_lease_time'} );
+    return $ip_last->addr;
 }
 
 
