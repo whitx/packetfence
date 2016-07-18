@@ -41,7 +41,7 @@ SKIP: {
     my $runner = catalyst_runner->new(app => 'pfappserver');
     my ($port, $status) = $runner->start_catalyst_server;
     skip "The Catalyst Service could not be started", $casper_tests if $status ne 'ready';
-    my $base_url = "http://localhost:$port/";
+    my $base_url = "http://127.0.0.1:$port/";
     casperjs_ok("login_admin.js", "--base_url=$base_url --username=admin --password=admin2 --is_password_valid=false");
     casperjs_ok("login_admin.js", "--base_url=$base_url --username=admin --password=admin --is_password_valid=true");
     casperjs_ok("logout_admin.js", "--base_url=$base_url --username=admin --password=admin");

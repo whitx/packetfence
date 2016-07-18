@@ -43,9 +43,6 @@ SKIP: {
     skip "The Catalyst Service could not be started", $tests if $status ne 'ready';
     my $driver = Selenium::PhantomJS->new;
 # Insert code here
-    #my $driver = Selenium::Remote::Driver->new( remote_server_addr => "localhost",
-    #                                           port => 4444,
-    #                                           browser_name => "firefox");
 
     my $base_url = "http://127.0.0.1:$port";
     #$driver->get_page_source;
@@ -53,7 +50,6 @@ SKIP: {
 
     $driver->get("${base_url}/configurator/enforcement/");
     print $driver->get_body();
-    print $driver->get_page_source;
     $driver->find_element("enforcement_vlan", "id")->click; 
     $driver->find_element("//button[\@type='submit']", "xpath")->click;
     print $driver->get_body();
