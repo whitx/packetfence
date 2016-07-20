@@ -27,7 +27,7 @@ casper.test.begin('Packetfence Configurator Enforcement Test', number_of_tests, 
         test.assertExists('form[name=interfaces]', "interfaces form is found");
         test.assertExists('a[href="http://127.0.0.1:3000/interface/ens192/read"]', "interface_192 link is found");
         this.evaluate(function() {
-            document.querySelector('a[href="http://127.0.0.1:3000/interface/ens192/read"]').click();
+            document.getElementById('ens192').click();
         });
     });
     
