@@ -3,6 +3,8 @@ var system = require('system');
 
 var base_url = casper.cli.get('base_url');
 
+var mgmt_int = casper.cli.get('mgmt_int');
+
 var number_of_tests = 9;
 
 // Initiate test
@@ -27,8 +29,8 @@ casper.test.begin('Packetfence Configurator Enforcement Test', number_of_tests, 
         test.assertTitle("Configurator - PacketFence");
         test.assertUrlMatch(/configurator\/networks/, "We are on the networks page");
         test.assertExists('form[name=interfaces]', "interfaces form is found");
-        test.assertExists('a[href="http://127.0.0.1:3000/interface/ens192/read"]', "interface_192 link is found");
-        this.clickLabel('ens192');
+        test.assertExists('a[href="http://127.0.0.1:3000/interface/ens192/read"]', "interface link is found");
+        this.click('#' + mgmt_int + '_link');
         casper.wait(1000, function() {
             this.echo("waited 1sec to load the module");
         });
@@ -41,6 +43,7 @@ casper.test.begin('Packetfence Configurator Enforcement Test', number_of_tests, 
         this.fill('#modalEditInterface', {
             'ipaddress' :   '172.21.130.1',
             'netmask' :     '255.255.0.0',
+            'type' :        '2'
         });
         this.capture('test.png', {
             top: 0,
