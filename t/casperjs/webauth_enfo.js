@@ -3,7 +3,9 @@ var system = require('system');
 
 var base_url = casper.cli.get('base_url');
 
-var number_of_tests = 8;
+var number_of_tests = 9;
+
+// Initiate test
 
 casper.test.begin('Packetfence Configurator Enforcement Test', number_of_tests, function suite(test) {
     casper.start(base_url + "/configurator/" , function() {
@@ -26,21 +28,26 @@ casper.test.begin('Packetfence Configurator Enforcement Test', number_of_tests, 
         test.assertUrlMatch(/configurator\/networks/, "We are on the networks page");
         test.assertExists('form[name=interfaces]', "interfaces form is found");
         test.assertExists('a[href="http://127.0.0.1:3000/interface/ens192/read"]', "interface_192 link is found");
-        this.evaluate(function() {
-            document.getElementById('ens192').click();
+        this.clickLabel('ens192');
+        casper.wait(1000, function() {
+            this.echo("waited 1sec to load the module");
         });
-    });
-    
-    casper.wait(2000, function() {
-        this.echo("waited 2 sec");
-        this.echo(this.getHTML());
     });
     
     // Change the interface settings
     
     casper.then(function() {
-//        test.assertExists('form[action="http://127.0.0.1:3000/interface/ens192/update"]', "widget is present");
-//        test.assertExists('div[class=modal-header]', "Modal header is present");
+        test.assertExists('div[class=modal-body]', "Modal body is present");
+        this.fill('#modalEditInterface', {
+            'ipaddress' :   '172.21.130.1',
+            'netmask' :     '255.255.0.0',
+        });
+        this.capture('test.png', {
+            top: 0,
+            left: 0,
+            width: 1000,
+            height: 1000
+        });
     });
 
     casper.run(function() {
