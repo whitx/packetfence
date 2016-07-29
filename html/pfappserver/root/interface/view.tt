@@ -18,7 +18,7 @@
     <p class="info_routed">[% l('Since NATting mode is disabled, PacketFence will adjust iptables to rules to route traffic rather than natting it. Make sure to add the routes on the system.') %]</p>
   </div>
   <div class="modal-footer">
-    <a href="#" class="btn" data-dismiss="modal">[% l('Close') %]</a>
-    [% IF can_access("INTERFACES_UPDATE") %]<button type="submit" class="btn btn-primary" data-loading-text="[% l('Saving') %]">[% l('Save') %]</button>[% END %]
+    <a href="#" id="close_int" class="btn" data-dismiss="modal">[% l('Close') %]</a>
+    [% IF can_access("INTERFACES_UPDATE") %]<button id="save_int" type="submit" class="btn btn-primary" data-loading-text="[% l('Saving') %]">[% l('Save') %]</button>[% END %]
   </div>
 </form>
