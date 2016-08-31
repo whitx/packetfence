@@ -44,4 +44,11 @@ Before getting strated this will help you to understand how to define a policy f
 How to define a policy
 ~~~~~~~~~~~~~~~~~~~~~~
 
+There will bu multiple points you need to think of, here is list that can help you.
+
+Type of the device.
+Connection Type. Sub Connection type.
+AP/Switch from where it connect.
+Source from which it connect.
+SSID from which it connect.
 
