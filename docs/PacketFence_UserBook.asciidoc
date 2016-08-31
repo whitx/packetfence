@@ -1,0 +1,47 @@
+Adding a new policy
+Defining the policy, what do you want to happen for X or Y device:
+Where should it land, what are the conditions, (device type, connect from AP Z ,from SSID W, etc...)
+Add Switches
+Add Sources
+Configure Portal Modules
+Configure Portal Profiles
+Create Filters (conditions)
+If needed add from filtering engine(vlan, radius, apache,...)
+Test + check log for portal profile hit 
+
+UserBook Guide
+==============
+:encoding: UTF-8
+:lang: en
+:doctype: book
+:toc: left
+
+////
+
+    This file is part of the PacketFence project.
+
+    See PacketFenceUserBook_Guide-docinfo.xml for authors, copyright
+    and license information.
+
+////
+
+include::includes/global-attributes.asciidoc[]
+
+About this Guide
+----------------
+
+This guide will walk you through the configuration of policies, with example and how to build your own.
+
+The instructions are based on version {release_version} of PacketFence.
+
+The latest version of this guide is available online at http://www.packetfence.org/documentation/guides.html
+
+Create a new connection policy
+------------------------------
+
+Before getting strated this will help you to understand how to define a policy for the use YOU need.
+
+How to define a policy
+~~~~~~~~~~~~~~~~~~~~~~
+
+
