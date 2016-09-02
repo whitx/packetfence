@@ -37,28 +37,28 @@ The instructions are based on version {release_version} of PacketFence.
 The latest version of this guide is available online at http://www.packetfence.org/documentation/guides.html
 
 Assumptions
-^^^^^^^^^^^
+~~~~~~~~~~~
 
  * You have a PacketFence installed and went through the configurator.
  * You are using a VLAN enforcement of WebAuth type of installation.
- * Your PacketFence is up and running, `Management` interface is reachable from your network equipement (Wireless controller/switches).
+ * Your PacketFence is up and running, `Management` interface is reachable from your network equipement (wireless controller/switches).
  * There is no firewall in between your network equipements and PacketFence that could block 1700, 1812, 1813, 3799.
 
 
 Introduction
-^^^^^^^^^^^^
+~~~~~~~~~~~~
 
 The UserBook is here to help you understand on how to configure your PacketFence for your need. This guid will explain to you how to configure simple setup and diffreent action to complexify in the purpose to go to your final objective.
 
 Remember that simple is not easy, it does just require less time to configure and debug aftewards.
 
 Wi-Fi public
-^^^^^^^^^^^^
+~~~~~~~~~~~~
 
-To kick off we will configure two SSID, including a Public SSID (Open with MAC authentication and a portal login using PacketFence local users source, LDAP or SMS).
+To kick off we will configure a Public SSID (Open with MAC authentication and a portal login using PacketFence local users source, LDAP or SMS).
 
 Open SSID
-~~~~~~~~~
+^^^^^^^^^
 
 First of all you need to make sure the following are defined:
  * Wireless controller from which the request will come, in the section `Networks->Switches`.
@@ -74,11 +74,34 @@ image::docs/images/portal-profile-creation.png[scaledwidth="100%",alt="Adding a 
 image::docs/images/portal-profile-filter-simple.png[scaledwidth="100%",alt="Adding a portal profile filter SSID"]
 image::docs/images/portal-profile-sources.png[scaledwidth="100%",alt="Adding a portal profile sources"]
 
-From now on, every one connecting from the SSID `PF-Open` will be landing on the portal define by this portal profile.
-
 You have some options under the tab `Captive Portal` where you can add your logo company, and a redirection URL or the different languages in which the page will be available for instance. Have a look through those options.
 
 image::docs/images/portal-profile-captive-portal.png[scaledwidth="100%",alt="Captive Portal tab under a portal profile"]
 
+From now on, every one connecting from the SSID `PF-Open` will be landing on the portal define by this portal profile. They will be able to loggin with either SMS, local user or LDAP account.
+
+Secure SSID
+^^^^^^^^^^^
+
+We will now add a Secure SSID (WPA2-Entreprise, that allow user to login through EAP-PEAP, User athentication, and autoregister authenticated users)
+
+Configure your SSID on your wireless controller. On PacketFence if you don't have a portal profile with matching condition it will go through the default which if not modified has every availalble authentication sources, scans etc.
+
+Here we will add a VLAN filter to allow users connecting in WPA2-Entreprise to be autoregister.
+
+From the configuration go in `Main->Filter engies`, and we will edit the `VLAN filters`.
+
+Create a filter as follow:
+
+---
+[wireless_eap]
+filter = connection_type
+operator = is
+value = Wireless-802.11-EAP
+
+[autoreg:wireless_eap]
+scope = AutoRegister
+role = default
+---
 
 
