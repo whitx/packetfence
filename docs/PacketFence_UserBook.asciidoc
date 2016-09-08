@@ -96,12 +96,12 @@ role = default
 BYOD and corporate devices
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We will now add the possibility to filter corportate and BYOD devices. One way to do that is to use Machine Authentication (Windows devices only) and for the other `corporate' devices use EAP-TLS and a specific LDAP attribute.
+We will now add the possibility to filter corportate and BYOD devices. One way to do that is to use Machine Authentication (Windows devices only) and for the other `corporate' devices use EAP-TLS and a specific LDAP attribute. To begin create a new PacketFence role, under `Users->Roles` in the tab configuration, call it `corporate`.
 
 Machine Authentication via LDAP
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To configure Machine Authentication, please configure a source LDAP with the setting *Username Attribube: servicePrincipalName* and make sure the *Base DN* is equal to where the `OU' where the computers you want to authenticate are.
+To configure Machine Authentication, please configure a source LDAP with the setting *Username Attribube: servicePrincipalName* and make sure the *Base DN* is equal to where the `OU' where the computers you want to authenticate are. In the source rule, create one that will return de role `corporate`.
 
 If you need additional information for configurating this source please refer to https://packetfence.org/doc/PacketFence_Administration_Guide.html#_authentication section `9.2.1: Example`.
 
@@ -116,6 +116,8 @@ Thoses devices cannot be authenticate via Machine Authentication, so we will nee
 
 First of all make sure that your RADIUS certificate from the PacketFence server and the certificates that you will provide are delivered from the same CA, else your authentication will not work. To enable EAP-TLS you will need to reconfigure the new RADIUS server certificate in the file conf/radiusd/eap.conf.
 
+While creating the RADIUS server certifcate make sure to have the Extended key usage: servAuth.
+
 Under the section `tls-config tls-common`, search for `private_key_file', `certificate_file' and `ca_file'. Thoses should contain respectively the path of:
 
  * the private key for your PacketFence server,
@@ -124,4 +126,14 @@ Under the section `tls-config tls-common`, search for `private_key_file', `certi
 
 If you have an `OCSP' capable PKI you can configure in the section `OSCP` in the eap.conf file.
 
+Lastely you will need to restart RADIUS to ensure the use of the new configuration and certificates. Please do the following:
+
+ * bin/pfcmd configureload hard
+ * bin/pfcmd service radiusd restart
+
+Make sure everything happens without errors.
+
+Now that your RADIUS is ready to handle EAP-TLS, configure your SSID connection profile on the `corporate' device using this method. Generate a client certificate for your device and install it on.  
+
+You can now create a new Portal Profile for EAP-TLS. Under the tab configuration, section `Main->Portal Profiles`, `Add profile` and select as a filter the Sub Connection Type as EAP-TLS, add your sources LDAP.
 
