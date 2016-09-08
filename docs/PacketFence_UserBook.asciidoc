@@ -96,10 +96,12 @@ role = default
 BYOD and corporate devices
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We will now add the possibility to filter corportate and BYOD devices. One way to do that is to use Machine Authentication (Windows devices only) and for the other `corporate' devices use EAP-TLS and a specific LDAP attribute. To begin create a new PacketFence role, under `Users->Roles` in the tab configuration, call it `corporate`.
+We will now add the possibility to filter corportate and BYOD devices. One way to do that is to use Machine Authentication (Windows devices only) and for the other `corporate' devices  you need to use EAP-TLS.
 
 Machine Authentication via LDAP
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To begin create a new PacketFence role, under `Users->Roles` in the tab configuration, call it `corporate`.
 
 To configure Machine Authentication, please configure a source LDAP with the setting *Username Attribube: servicePrincipalName* and make sure the *Base DN* is equal to where the `OU' where the computers you want to authenticate are. In the source rule, create one that will return de role `corporate`.
 
@@ -135,5 +137,12 @@ Make sure everything happens without errors.
 
 Now that your RADIUS is ready to handle EAP-TLS, configure your SSID connection profile on the `corporate' device using this method. Generate a client certificate for your device and install it on.  
 
-You can now create a new Portal Profile for EAP-TLS. Under the tab configuration, section `Main->Portal Profiles`, `Add profile` and select as a filter the Sub Connection Type as EAP-TLS, add your sources LDAP.
+Please configure an EAPTLS source whcih can be found while adding a new sources under `Internal->`, simpely give it a name, a description and a catch-all rule. This will allow you to validate the authentication via EAP-TLS.
+
+You can now create a new Portal Profile for EAP-TLS. Under the tab configuration, section `Main->Portal Profiles`, `Add profile` and select as a filter the Sub Connection Type as EAP-TLS, add your source EAP-TLS. Check the box "Automatically register devices". 
+
+You know have a full flow working for your corporate devices.
+
+
+
 
