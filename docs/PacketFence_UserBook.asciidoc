@@ -48,12 +48,11 @@ Assumptions
 Introduction
 ~~~~~~~~~~~~
 
-The UserBook is here to help you understand on how to configure your PacketFence for your need. This guid will explain to you how to configure simple setup and diffreent action to complexify in the purpose to go to your final objective.
+The UserBook is here to help you understand on how to configure your PacketFence for your need. This guide will explain to you how to configure simple setup and diffrent actions to complexify in the purpose to go to your final objective.
 
-Remember that simple is not easy, it does just require less time to configure and debug aftewards.
 
-Wi-Fi public
-~~~~~~~~~~~~
+Wi-Fi configuration
+~~~~~~~~~~~~~~~~~~~
 
 To kick off we will configure a Public SSID (Open with MAC authentication and a portal login using PacketFence local users source, LDAP or SMS).
 
@@ -61,6 +60,7 @@ Open SSID
 ^^^^^^^^^
 
 First of all you need to make sure the following are defined:
+
  * Wireless controller from which the request will come, in the section `Networks->Switches`.
  * Local source, sms source and LDAP source in the section `Users->Sources`.
 
@@ -104,4 +104,8 @@ scope = AutoRegister
 role = default
 ----
 
+BYOD and corporate devices
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We will now add the possibility to filter corportate and BYOD devices. One way to do that is to use Machine Authentication (Windows devices only) and some VLAN/RADIUS filters for others 'corporate' devices
 
