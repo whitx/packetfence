@@ -107,5 +107,19 @@ role = default
 BYOD and corporate devices
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We will now add the possibility to filter corportate and BYOD devices. One way to do that is to use Machine Authentication (Windows devices only) and some VLAN/RADIUS filters for others 'corporate' devices
+We will now add the possibility to filter corportate and BYOD devices. One way to do that is to use Machine Authentication (Windows devices only) and some VLAN/RADIUS filters for others `corporate' devices.
+
+Machine Authentication via LDAP
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To configure Machine Authentication, please configure a source LDAP with the setting *Username Attribube: servicePrincipalName* and make sure the *Base DN* is equal to where the `OU' where the computers you want to authenticate are.
+
+If you need additional information for configurating this source please refer to https://packetfence.org/doc/PacketFence_Administration_Guide.html#_authentication section `9.2.1: Example`.
+
+Of course while configuring your SSID on your devices, under `Security->Advanced Settings` make sure to select `Computer authentication` in the tab `802.1X settings`. This will force the computer to authenticate via its LDAP machine account.
+
+Machine Authentication via filters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Now that your Windows devices are able to be logged in with Machine Authentication you can class them as `corporate'. Let's say that you now need to add some `IPads' and `Linux computers' as `corporate' devices.
 
