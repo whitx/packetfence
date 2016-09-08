@@ -143,6 +143,9 @@ You can now create a new Portal Profile for EAP-TLS. Under the tab configuration
 
 You know have a full flow working for your corporate devices.
 
+Provisionning certificate
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Let's now imagine that we want to automate the certificate process, for enrolling new devices where a certificate cannot be pushed via GPO. this is where the provisionning will act.
 
 
