@@ -1,14 +1,3 @@
-Adding a new policy
-Defining the policy, what do you want to happen for X or Y device:
-Where should it land, what are the conditions, (device type, connect from AP Z ,from SSID W, etc...)
-Add Switches
-Add Sources
-Configure Portal Modules
-Configure Portal Profiles
-Create Filters (conditions)
-If needed add from filtering engine(vlan, radius, apache,...)
-Test + check log for portal profile hit 
-
 UserBook Guide
 ==============
 :encoding: UTF-8
@@ -107,7 +96,7 @@ role = default
 BYOD and corporate devices
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We will now add the possibility to filter corportate and BYOD devices. One way to do that is to use Machine Authentication (Windows devices only) and some VLAN/RADIUS filters for others `corporate' devices.
+We will now add the possibility to filter corportate and BYOD devices. One way to do that is to use Machine Authentication (Windows devices only) and for the other `corporate' devices use EAP-TLS and a specific LDAP attribute.
 
 Machine Authentication via LDAP
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -118,8 +107,21 @@ If you need additional information for configurating this source please refer to
 
 Of course while configuring your SSID on your devices, under `Security->Advanced Settings` make sure to select `Computer authentication` in the tab `802.1X settings`. This will force the computer to authenticate via its LDAP machine account.
 
-Machine Authentication via filters
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Others corporate devices
+^^^^^^^^^^^^^^^^^^^^^^^^
 
-Now that your Windows devices are able to be logged in with Machine Authentication you can class them as `corporate'. Let's say that you now need to add some `IPads' and `Linux computers' as `corporate' devices.
+Now that your Windows devices are able to be logged in with Machine Authentication you can class them as `corporate'. Let's say that you now need to add some `Linux computers' and `IPads' as `corporate' devices.
+
+Thoses devices cannot be authenticate via Machine Authentication, so we will need to use EAP-TLS and provide thoses devices with certificate.
+
+First of all make sure that your RADIUS certificate from the PacketFence server and the certificates that you will provide are delivered from the same CA, else your authentication will not work. To enable EAP-TLS you will need to reconfigure the new RADIUS server certificate in the file conf/radiusd/eap.conf.
+
+Under the section `tls-config tls-common`, search for `private_key_file', `certificate_file' and `ca_file'. Thoses should contain respectively the path of:
+
+ * the private key for your PacketFence server,
+ * the server certificate issued by your CA for your PacketFence server,
+ * the public key of your CA.
+
+If you have an `OCSP' capable PKI you can configure in the section `OSCP` in the eap.conf file.
+
 
