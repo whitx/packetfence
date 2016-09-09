@@ -206,6 +206,28 @@ zxcvbnmqwertyuiop78
 ----- END PRIVATE KEY -----
 ----
  
-We also advise to configure a SSID for provisioning, for instance: `OnBoarding-PF`, open with MAC Authentication, pointing to PacketFence. Add a filter SSID with this SSID name and add your provisioners to this new Portal Profile. From there users who logged in while have to follow the captive portal instruction to get provided.
+We also advise you to configure a SSID for provisioning, for instance: `OnBoarding-PF`, open with MAC Authentication, pointing to PacketFence. Create a new Portal Profile, Add a filter SSID with this SSID name, add the source you want the users to authenticate from and add your provisioners to this Portal Profile. From there, users who logged in will have to follow the captive portal instruction to get provided their certificate.
+
+
+Allowed corporate device only on an SSID
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We have seen how to define corporate devices, let's now make sure they are the only capable devices to connect to a certain SSID. To do so we will simply add a VLAN filters which will refuse the device if its role is not `corporate`.
+
+----
+[is_not_corporate]
+filter = node_info.category
+operator = is_not
+value = corporate
+
+[ssid_corporate]
+filter = ssid
+operator = is
+value = MyCompany
+
+[no_corpo:is_not_corporate&ssid_corporate]
+scope = RegisteredRole 
+role = refuse
+----
 
 
