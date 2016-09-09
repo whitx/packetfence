@@ -225,9 +225,49 @@ filter = ssid
 operator = is
 value = MyCompany
 
+[no_corpo_unreg:is_not_corporate&ssid_corporate]
+scope = RegisterationRole 
+role = refuse
+
 [no_corpo:is_not_corporate&ssid_corporate]
 scope = RegisteredRole 
 role = refuse
 ----
+
+Wired Configuration
+~~~~~~~~~~~~~~~~~~~
+
+We have seen extended wireless configuration, some can be applied to wired but not all. We will now extend our wired configuration.
+
+Deal with EAP authentication
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Let's say that you have a parc of Windows corporate computers, on your wired network for a user to be able to login with his account, you want them to use corporate computers. Here is a way to allow a user to login only if a machine authenticate via Machine Authentication beforehand. To do so we will use the VLAN filters. The full example is available in /usr/local/pf/conf/vlan_filters.conf.
+
+----
+[EthernetEAP]
+filter = connection_type
+operator = is
+value = Ethernet-EAP
+
+[machine]
+filter = node_info.machine_account
+operator = defined
+
+[EAPTLS]
+filter = radius_request
+attribute = EAP-Type
+operator = is
+value = EAP-TLS
+
+[3:EthernetEAP&!machine&!EAPTLS]
+scope = RegisteredRole
+role = refuse
+
+[4:EthernetEAP&!machine]
+scope = RegistrationRole
+role = refuse
+----
+
 
 
