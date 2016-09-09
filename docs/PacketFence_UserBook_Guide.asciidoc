@@ -9,7 +9,7 @@ UserBook Guide
 
     This file is part of the PacketFence project.
 
-    See PacketFenceUserBook_Guide-docinfo.xml for authors, copyright
+    See PacketFence_UserBook_Guide-docinfo.xml for authors, copyright
     and license information.
 
 ////
@@ -103,7 +103,7 @@ Machine Authentication via LDAP
 
 To begin create a new PacketFence role, under `Users->Roles` in the tab configuration, call it `corporate`.
 
-To configure Machine Authentication, please configure a source LDAP with the setting *Username Attribube: servicePrincipalName* and make sure the *Base DN* is equal to where the `OU' where the computers you want to authenticate are. In the source rule, create one that will return de role `corporate`.
+To configure Machine Authentication, please configure a source LDAP with the setting *Username Attribube: servicePrincipalName* and make sure the *Base DN* is equal to where the *OU* where the computers you want to authenticate are. In the source rule, create one that will return de role `corporate`.
 
 If you need additional information for configurating this source please refer to https://packetfence.org/doc/PacketFence_Administration_Guide.html#_authentication section `9.2.1: Example`.
 
@@ -146,6 +146,8 @@ You know have a full flow working for your corporate devices.
 Provisionning certificate
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Let's now imagine that we want to automate the certificate process, for enrolling new devices where a certificate cannot be pushed via GPO. this is where the provisionning will act.
+Let's now imagine that we want to automate the certificate process, for enrolling new devices where a certificate cannot be pushed via GPO. This is where the provisionning will act.
+
+
 
 
