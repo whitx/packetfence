@@ -146,8 +146,66 @@ You know have a full flow working for your corporate devices.
 Provisionning certificate
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Let's now imagine that we want to automate the certificate process, for enrolling new devices where a certificate cannot be pushed via GPO. This is where the provisionning will act.
+Let's now imagine that we want to automate the certificate process, for enrolling new devices where a certificate cannot be pushed via GPO. This is where the provisioning will act.
 
+PKI
+^^^
 
+You will need to start by adding your PKI provider, at the moment we are able to integreate with SCEP(MSPKI), PacketFence-PKI and local PKI.
+
+For the configuration of SCEP please refer to: https://packetfence.org/doc/PacketFence_MSPKI_Quick_Install_Guide.html
+
+For the configuration of PacketFence-PKI please refer to: https://packetfence.org/doc/PacketFence_PKI_Quick_Install_Guide.html
+
+After finishing configure your PKI in PacketFence we will now do the provisioners.
+
+Provisioning
+^^^^^^^^^^^^
+
+Provisioners allow devices to automatically configure themselves to connect to the proper SSID (if applicable), use the proper authentication method (e.g. EAP-TLS) and trust the CA certificate and any certificate signed by it.
+
+Provisioners are configured in the PacketFence administration GUI under `Configuration->Users->Provisioners`.
+
+Add a new provisioner for each of the classes of devices to be supported amongst Android, Apple Devices and Windows.
+Fill out the form, choosing a different Provisioning Id per provisioner.
+
+* Roles: The "Roles" field defines which devices will be affected by the provisioning item. If empty, all devices for this class will be affected.
+* SSID: The "SSID" field defines which SSID will be configured on the device using the authentication profile.
+* EAP-Type: The EAP type defines the authentication method supported and should be set to EAP-TLS to integrate with the PacketFence PKI.
+* Security type: The security type should be set to WPA2 to integrate with the PacketFence PKI.
+* PKI Provider: This should match the provider you configured earlier in the PKI provider section.
+
+The following is an example on how to configure an EAP-TLS connection for Windows/Android/Mac OS X/iOS
+
+image::docs/images/scep-ms-pki-eaptls-example.png[scaledwidth="100%",alt="Provisioner EAP-TLS configuration"]
+
+Mac OS X/iOS require the provisioning profile to be signed if you want to remove the `untrusted` warning when installing the profile. You need to sign it with a Certification Authority already trusted by the device such as e.g. VeriSign.
+Configuring this has to be done in the 'Signing' tab in the "Apple devices". 
+
+image::docs/images/packetfence-pki-eaptls-sign-example.png[scaledwidth="100%",alt="Signing provisioner"]
+
+Fill out the fields with the contents of the Base64 encoded certificates.
+To extract this information from a pem formatted certificate, copy the file content included between the begin and end tag, not including the delimiters themselves.
+
+Certificate file example:
+
+----
+----- BEGIN CERTIFICATE -----
+1234567890asdfghjkl
+zxcvbnmqwertyuiop78
+----- END CERTIFICATE -----
+----
+
+Copy everything between the BEGIN and END lines, but not the lines themselves.
+Repeat this operation for the certificate key and intermediate certificate.
+
+----
+----- BEGIN PRIVATE KEY -----
+1234567890asdfghjkl
+zxcvbnmqwertyuiop78
+----- END PRIVATE KEY -----
+----
+ 
+We also advise to configure a SSID for provisioning, for instance: `OnBoarding-PF`, open with MAC Authentication, pointing to PacketFence. Add a filter SSID with this SSID name and add your provisioners to this new Portal Profile. From there users who logged in while have to follow the captive portal instruction to get provided.
 
 
