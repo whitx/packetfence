@@ -235,6 +235,16 @@ scope = RegisteredRole
 role = refuse
 ----
 
+Scanners
+^^^^^^^^
+
+You recently installed a Nessus 6 on your network and want to use this to scan for malwares, vulnerabilities or configuration compliance. Make sure to configure your Nessus for the wanted tasks. You will now configure PacketFence side, you want this scan to be active only for Windows device connecting on the Secure SSID.
+
+Start by going `Compliance->Scan Engines` under the tab Configuration. Click `Add Scan` and select `Nessus6'. Enter the related information of your Nessus server, you can narrow down to which this scan will apply, using `Roles' or `OS' filter from Fingerbank. Add the `OS' : *Windows* in the section for it. Choose at when do you want the scan to happen, before, after or on registration.
+
+When your scan is configured you need to add it to the Portal Profile. Search for the Portal Profile you configured for the SSID secure and add the newly configurated scanner.
+
+
 Wired Configuration
 ~~~~~~~~~~~~~~~~~~~
 
