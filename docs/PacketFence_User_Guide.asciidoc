@@ -254,6 +254,8 @@ image::docs/images/billing-tier-daily.png[scaledwidth="100%",alt="Billing Tier e
 
 You now need to add the payement provider you want to use, to do so go through `Users->Sources` and select `Add source`, Billing and your provider. To configure the provider you need please follow: https://packetfence.org/doc/PacketFence_Administration_Guide.html#_billing_engine section `12.2.1.Configuring a billing source` and follow the instructions macthing your provider.
 
+Lastely you will need to add your source and the billing tiers to the Portal Profile, for this edit rhe Portal Profile for your `Open-PF` SSID and change the local and SMS sources for the billing one, add the billing tiers and your Portal profile is now ready to 
+
 Wired Configuration
 ~~~~~~~~~~~~~~~~~~~
 
