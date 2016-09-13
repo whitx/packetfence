@@ -236,7 +236,7 @@ role = refuse
 ----
 
 Scanners
-^^^^^^^^
+~~~~~~~~
 
 You recently installed a Nessus 6 on your network and want to use this to scan for malwares, vulnerabilities or configuration compliance. Make sure to configure your Nessus for the wanted tasks. You will now configure PacketFence side, you want this scan to be active only for Windows device connecting on the Secure SSID.
 
