@@ -1,5 +1,5 @@
-UserBook Guide
-==============
+User Guide
+==========
 :encoding: UTF-8
 :lang: en
 :doctype: book
@@ -9,7 +9,7 @@ UserBook Guide
 
     This file is part of the PacketFence project.
 
-    See PacketFence_UserBook_Guide-docinfo.xml for authors, copyright
+    See PacketFence_User_Guide-docinfo.xml for authors, copyright
     and license information.
 
 ////
@@ -37,7 +37,7 @@ Assumptions
 Introduction
 ~~~~~~~~~~~~
 
-The UserBook is here to help you understand on how to configure your PacketFence for your need. This guide will explain to you how to configure simple setup and diffrent actions to complexify in the purpose to go to your final objective.
+The User Guide is here to help you understand on how to configure your PacketFence for your need. This guide will explain to you how to configure simple setup and diffrent actions to complexify in the purpose to go to your final objective.
 
 
 Wi-Fi configuration
