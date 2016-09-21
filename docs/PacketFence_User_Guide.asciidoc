@@ -291,5 +291,9 @@ scope = RegistrationRole
 role = refuse
 ----
 
+Debugging
+~~~~~~~~~
+
+This are some method you could use if a device is unable to connect or a user is not getting where it should. Since version 6.0 the RADIUS Audit Log was introduce, section Auditing after 6.3. this will be your main tool of diagnostics with /usr/loca/pf/logs section.
 
 
