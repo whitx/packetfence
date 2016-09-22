@@ -317,3 +317,9 @@ If the request is not here, you will need to look at the following:
 When this has been fixed you should receive the RADIUS request from the client. Now what is the status of this one? 
 
 If it is `Reject` try to see what is the `Reason' for it by clicking `Details'. If the message is not explicit enough, you could select the tab `RADIUS' nad have the full RADIUS Request and Reply details. that should allow you to determine what is the reason why the device could not connect.
+
+Let's now imagine the same scenario but the device want to connect in EAP-TLS where there is an auto register filter.
+
+The connection seems to fail from the device, using the same method, you will need to make sure that the mode of authentication (Computer or User) is matching the certificate deployed on the client. Also if there is a fail handshake between the certificates, that will appear as the fail reasons, for instance not issued by the same CA.
+
+If your RADIUS connection was valid, you should know have a line the Audit Log wher ethe status should be reg instead of unreg. Looking though the `Details' youshould see in the tab RADIUS the auto register that have been returned.
