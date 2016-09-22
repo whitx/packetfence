@@ -291,6 +291,29 @@ scope = RegistrationRole
 role = refuse
 ----
 
+NEAT and switch authentication
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+NEAT (Network Edge Authentication Topology) is a Cisco protocol to be able to authenticate a switch on another one via 802.1x. Cisco configuraition allow you to do it in EAP-FAST or EAP-MD5. From PacketFence version 6.3, EAP-FAST is supported.
+
+First of all you will need to enable EAP-FAST if it is not, section `RADIUS->Authentication Methods`, and add the needed type. 
+
+image::docs/images/radius-authentication-methods.png[scaledwidth="100%",alt="RADIUS Authentication Methods"]
+
+Now add a RADIUS filter, that will return a specific RADIUS attribute, for the client which authenticate to be seen as a switch using NEAT.
+
+----
+[switches]
+filter = radius_request.User-Name
+operator = is
+value = neat-account
+
+[switches_av_pair:switches]
+scope = returnRadiusAccessAccept
+merge_answer = yes
+answer1 = Cisco-AVPair => device-traffic-class=switch
+----
+
 Debugging
 ~~~~~~~~~
 
