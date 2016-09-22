@@ -304,12 +304,14 @@ image::docs/images/radius-audit-log-overview.png[scaledwidth="100%",alt="RADIUS 
 The RADIUS Audit Log is one of your main tool when it comes to debugging, it will allow you to see every RADIUS request and answer that went through PacketFence. 
 
 Let's assume the following scenario:
+
  * Your device as the mac aa:bb:cc:dd:ee:ff, it try to connect from the switch with IP 192.168.0.10 via MAC authentication,
  you are supposed to be accepted and redirected to the Portal Profile: MACAuth.
  
 Now is the request from your device coming through in the RADIUS log?
 
 If the request is not here, you will need to look at the following:
+
  * RADIUS server configuration on the switch(RADIUS secret, IP, port),
  * IP based communication between PacketFence management IP and the switch,
  * General switch configuration,
