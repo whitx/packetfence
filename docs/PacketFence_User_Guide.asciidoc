@@ -314,6 +314,71 @@ merge_answer = yes
 answer1 = Cisco-AVPair => device-traffic-class=switch
 ----
 
+Testing RADIUS with eapol_test
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To test your radius you have multiple way, here are few example on how to do it with eapol_test. We assume that your server is joind to your domain, and properly configured to authenticate via EAP-TLS, EAP-PEAP or others.
+
+First of all install eapol_test by doing the following:
+
+----
+yum install eapol_test --enablerepo=packetfence-extra
+----
+
+The configuration file for eapol_test are available at /usr/share/eapol_test/*.conf 
+
+You now need to configure your configuration file to match your user.
+
+Let's start with the EAP-PEAP:
+
+edit the file /usr/share/eapol_test/peap-mschapv2.conf and change the following fields:
+ 
+ * identity="bob"
+ * password="hello"
+
+You can also uncomment the ca_cert line if you want to verifiy the CA during the authentication process. To verify that a Portal Profile with a filter by SSID is working, you can also change the field `ssid="example"`.
+
+To test EAP-TLS you will need to create a configuration file like the following:
+
+----
+network={
+        ssid="example"
+        key_mgmt=WPA-EAP
+        eap=TLS
+        identity="my_client_cert_commun_name"
+        ca_cert=/usr/local/pf/raddb/cert/YourCA.pem
+        client_cert=/usr/local/pf/conf/ssl/YourClientCert.pem
+        private_key=/usr/local/pf/conf/ssl/YourClientKey.key
+        # uncomment the following line if you have a password for your private key file
+        # private_key_passwd="password"
+}
+----
+
+To test EAP-FAST create a file like the following:
+
+----
+network={
+        ssid="example"
+        key_mgmt=WPA-EAP
+        eap=FAST
+        pac_file="/tmp/tmp.pac"
+        phase1="fast_provisioning=2"
+        phase2="autheap=MSCHAPV2"
+        identity="LDAP_Username"
+        password="LDAP_Password"
+        #
+        #  Uncomment the following to perform server certificate validation.
+#       ca_cert="/etc/raddb/certs/ca.der"
+}
+----
+
+Now that you have your different configuration file run eapol_test by doing:
+
+eapol_test -c /usr/share/eapol_test/config_file.conf -a 192.168.0.5 -p 1812 -s RADIUS_secret
+
+192.168.0.5 being your PacketFence management IP address. All the result should be visible on the console where you launched the eapol_test and through the RADIUS Audit Log.
+
+
 Debugging
 ~~~~~~~~~
 
