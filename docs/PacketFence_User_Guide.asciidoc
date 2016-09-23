@@ -314,8 +314,11 @@ merge_answer = yes
 answer1 = Cisco-AVPair => device-traffic-class=switch
 ----
 
-Testing RADIUS with eapol_test
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Testing RADIUS 
+~~~~~~~~~~~~~~
+
+Use eapol_test
+^^^^^^^^^^^^^^
 
 To test your radius you have multiple way, here are few example on how to do it with eapol_test. We assume that your server is joind to your domain, and properly configured to authenticate via EAP-TLS, EAP-PEAP or others.
 
@@ -376,7 +379,14 @@ Now that you have your different configuration file run eapol_test by doing:
 
 eapol_test -c /usr/share/eapol_test/config_file.conf -a 192.168.0.5 -p 1812 -s RADIUS_secret
 
-192.168.0.5 being your PacketFence management IP address. All the result should be visible on the console where you launched the eapol_test and through the RADIUS Audit Log.
+192.168.0.5 being your PacketFence management IP address. All the results should be visible on the console where you launched the eapol_test and through the RADIUS Audit Log.
+
+Testing without eapol_test
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If you need to test it with a real environnement, start by making sure all your configuration are fine. Make sure your PacketFence server is joined to the domain and also that the CA and RADIUS certificate are correct.
+
+
 
 
 Debugging
