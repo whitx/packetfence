@@ -55,7 +55,7 @@ casper.test.begin('Packetfence Configurator Enforcement Test', number_of_tests, 
         casper.wait(2000, function() {
             this.echo("waited 2sec to close the form");
         });*/
-        test.assertExists('form[name="networks"]', "networks form is found");
+        /*test.assertExists('form[name="networks"]', "networks form is found");
         this.fill('form[name="networks"]', {
             'gateway' :     '172.20.0.1',
         });
@@ -64,7 +64,7 @@ casper.test.begin('Packetfence Configurator Enforcement Test', number_of_tests, 
             left: 0,
             width: 1000,
             height: 1200
-        });
+        });*/
         this.evaluate(function() {
             document.querySelector('button[type="submit"]').click();
         });
@@ -78,6 +78,13 @@ casper.test.begin('Packetfence Configurator Enforcement Test', number_of_tests, 
         test.assertTitle("Configurator - PacketFence");
         test.assertUrlMatch(/configurator\/database/, "We are on the database page");
         test.assertExists('form[name="database"]', "database form is found");
+        this.capture('test.png', {
+            top: 0,
+            left: 0,
+            width: 1000,
+            height: 1200
+        });
+
         this.fill('form[name="database"]', {
             'root_password':    'inverse',
         }); 
