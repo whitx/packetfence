@@ -6,8 +6,11 @@ var mgmt_int = casper.cli.get('mgmt_int');
 var ip_mgmt = casper.cli.get('ip_mgmt');
 var mask_mgmt = casper.cli.get('mask_mgmt');
 var gateway = casper.cli.get('gateway');
+var domain = casper.cli.get('domain');
+var hostname = casper.cli.get('hostname');
+var email_alert = casper.cli.get('email_alert');
 
-var number_of_tests = 17;
+var number_of_tests = 18;
 
 // Initiate test
 
@@ -32,8 +35,8 @@ casper.test.begin('Packetfence Configurator Enforcement Test', number_of_tests, 
         test.assertExists('form[name=interfaces]', "interfaces form is found");
         test.assertExists('a[href="http://127.0.0.1:3000/interface/' + mgmt_int + '/read"]', "interface link is found");
         this.click('a[href="http://127.0.0.1:3000/interface/' + mgmt_int + '/read"]');
-        casper.wait(3000, function() {
-            this.echo("waited 3sec to load the module");
+        casper.wait(2000, function() {
+            this.echo("waited 2sec to load the module");
         });
     });
     
@@ -100,9 +103,10 @@ casper.test.begin('Packetfence Configurator Enforcement Test', number_of_tests, 
         test.assertUrlMatch(/configurator\/configuration/, "We are on the configuration page");
         test.assertExists('form[name="config"]', "config form is found");
         this.fill('form[name="config"]', {
-            'general_domain':       'local',
-            'general_hostname':     'pf',
-            'alerting_emailaddr':   'support@inverse.ca',
+            'general_domain':       domain,
+            'general_hostname':     hostname,
+            'alerting_emailaddr':   email_alert,
+            'alerting_smtpserver':  '10.0.0.6',
         }); 
         this.click('a[href="http://127.0.0.1:3000/configurator/admin"]');
     });
@@ -119,6 +123,30 @@ casper.test.begin('Packetfence Configurator Enforcement Test', number_of_tests, 
             'admin_password2':  'inverse',
         }); 
         this.click('#adminPassword');
+        this.click('a[href="http://127.0.0.1:3000/configurator/fingerbank"]');
+    });
+
+    // Configure the fingerbank section
+
+    casper.waitForSelector("i.icon-user.icon-white", function() {}, function() {}, 500);
+
+    casper.then(function() {
+        test.assertUrlMatch(/configurator\/fingerbank/, "We are on the fingerbank page");
+        test.assertExists('form[name="admin"]', "fingerbank form is found");
+        this.fill('form[name="admin"]', {
+            'api_key':  '2e5f70be1ed2d97734ce61e117536dd8ed242a76',
+        });
+        this.click('#configure_fingerbank_api_key');
+        this.click('#configure_fingerbank_mysql');
+        this.click('a[href="http://127.0.0.1:3000/configurator/services"]');
+    });
+
+    // Launch the services
+
+    casper.waitForSelector("i.icon-user.icon-white", function() {}, function() {}, 500);
+
+    casper.then(function() {
+        test.assertUrlMatch(/configurator\/services/, "We are on the services page");
         this.evaluate(function() {
             document.querySelector('button[type="submit"]').click();
         });
