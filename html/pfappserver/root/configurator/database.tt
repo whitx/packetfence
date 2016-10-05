@@ -68,7 +68,7 @@
             <div class="control-group">
               <label class="control-label" for="root_password">[% l('Password') %]</label>
               <div class="controls">
-                <input id="root_password" class="text" type="password">
+                <input id="root_password" name="root_password" class="text" type="password">
                 <button type="submit" class="btn" id="testDatabase" href="[% c.uri_for('/db/test') %]">[% l('Test') %]</button>
               </div>
             </div>

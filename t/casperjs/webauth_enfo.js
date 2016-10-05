@@ -2,10 +2,12 @@ var utils = require('utils');
 var system = require('system');
 
 var base_url = casper.cli.get('base_url');
-
 var mgmt_int = casper.cli.get('mgmt_int');
+var ip_mgmt = casper.cli.get('ip_mgmt');
+var mask_mgmt = casper.cli.get('mask_mgmt');
+var gateway = casper.cli.get('gateway');
 
-var number_of_tests = 12;
+var number_of_tests = 17;
 
 // Initiate test
 
@@ -26,7 +28,6 @@ casper.test.begin('Packetfence Configurator Enforcement Test', number_of_tests, 
     casper.waitForSelector("i.icon-user.icon-white", function() {}, function() {}, 500);
 
     casper.then(function() {
-        test.assertTitle("Configurator - PacketFence");
         test.assertUrlMatch(/configurator\/networks/, "We are on the networks page");
         test.assertExists('form[name=interfaces]', "interfaces form is found");
         test.assertExists('a[href="http://127.0.0.1:3000/interface/' + mgmt_int + '/read"]', "interface link is found");
@@ -41,28 +42,26 @@ casper.test.begin('Packetfence Configurator Enforcement Test', number_of_tests, 
     casper.then(function() {
         test.assertExists('div[class=modal-body]', "Modal body is present");
         this.fill('form[name="modalEditInterface"]', {
-            'ipaddress' :   '172.20.20.66',
-            'netmask' :     '255.255.0.0',
+            'ipaddress' :   ip_mgmt,
+            'netmask' :     mask_mgmt,
         });
 
         this.evaluate(function() {
-            document.getElementById("#type").selectedIndex = 1; //.value('portal');
-            document.getElementById("#additional_listening_daemons").selectedIndex = 0; //.value('portal');
+            document.getElementById("#type").selectedIndex = 1;
+            document.getElementById("#additional_listening_daemons").selectedIndex = 0;
             document.querySelector('button[type="submit"]').click();
             document.getElementById('#save_int').click();
         });
-        //this.click('#save_int');
         casper.wait(2000, function() {
             this.echo("waited 2sec to close the form");
         });
         test.assertExists('form[name="networks"]', "networks form is found");
         this.fill('form[name="networks"]', {
-            'gateway' :     '172.20.0.1',
+            'gateway' :     gateway,
         });
 
-        this.evaluate(function() {
-            document.querySelector('button[type="submit"]').click();
-        });
+        test.assertExists('a[href="http://127.0.0.1:3000/configurator/database"]', "Link to database found");
+        this.click('a[href="http://127.0.0.1:3000/configurator/database"]');
     });
     
     // Configure the database
@@ -70,37 +69,34 @@ casper.test.begin('Packetfence Configurator Enforcement Test', number_of_tests, 
     casper.waitForSelector("i.icon-user.icon-white", function() {}, function() {}, 500);
 
     casper.then(function() {
-        test.assertTitle("Configurator - PacketFence");
         test.assertUrlMatch(/configurator\/database/, "We are on the database page");
         test.assertExists('form[name="database"]', "database form is found");
-        /*this.capture('test.png', {
-            top: 0,
-            left: 0,
-            width: 1000,
-            height: 1200
-        });*/
 
         this.fill('form[name="database"]', {
             'root_password':    'inverse',
         }); 
         this.click('#testDatabase');
+        /*if (test.assertExists('#root_pass_new')) {
+            this.fill('form[name=database]', {
+                'root_pass_new':    'inverse',
+                'root_pass_new2':    'inverse',
+            });
+        } else {
+        };*/
         this.click('#createDatabase');
         this.fill('form[name="database"]', {
             'database.pass':    'pf',
             'database.pass2':    'pf',
         });
         this.click('#assignUser');
-        this.evaluate(function() {
-            document.querySelector('button[type="submit"]').click();
-        });
+        this.click('a[href="http://127.0.0.1:3000/configurator/configuration"]');
     });
 
     // Configure PacketFence
 
     casper.waitForSelector("i.icon-user.icon-white", function() {}, function() {}, 500);
 
-    /*casper.then(function() {
-        test.assertTitle("Configurator - PacketFence");
+    casper.then(function() {
         test.assertUrlMatch(/configurator\/configuration/, "We are on the configuration page");
         test.assertExists('form[name="config"]', "config form is found");
         this.fill('form[name="config"]', {
@@ -108,9 +104,7 @@ casper.test.begin('Packetfence Configurator Enforcement Test', number_of_tests, 
             'general_hostname':     'pf',
             'alerting_emailaddr':   'support@inverse.ca',
         }); 
-        this.evaluate(function() {
-            document.querySelector('button[type="submit"]').click();
-        });
+        this.click('a[href="http://127.0.0.1:3000/configurator/admin"]');
     });
 
     // Configure the admin password
@@ -118,7 +112,6 @@ casper.test.begin('Packetfence Configurator Enforcement Test', number_of_tests, 
     casper.waitForSelector("i.icon-user.icon-white", function() {}, function() {}, 500);
 
     casper.then(function() {
-        test.assertTitle("Configurator - PacketFence");
         test.assertUrlMatch(/configurator\/admin/, "We are on the admin password page");
         test.assertExists('form[name="admin"]', "admin form is found");
         this.fill('form[name="admin"]', {
@@ -129,7 +122,7 @@ casper.test.begin('Packetfence Configurator Enforcement Test', number_of_tests, 
         this.evaluate(function() {
             document.querySelector('button[type="submit"]').click();
         });
-    });*/
+    });
 
     casper.run(function() {
         test.done();
