@@ -392,7 +392,7 @@ If you need to test it with a real environnement, start by making sure all your 
 Debugging
 ~~~~~~~~~
 
-This are some method you could use if a device is unable to connect or a user is not getting where it should. Since version 6.0 the RADIUS Audit Log was introduce, section Auditing after 6.3. this will be your main tool of diagnostics with /usr/loca/pf/logs section.
+This are some method you could use if a device is unable to connect or a user is not getting where it should. Since version 6.0 the RADIUS Audit Log was introduce, section Auditing after 6.3. this will be your main tool of diagnostics with /usr/local/pf/logs section.
 
 Debugging example
 ^^^^^^^^^^^^^^^^^
@@ -403,7 +403,7 @@ The RADIUS Audit Log is one of your main tool when it comes to debugging, it wil
 
 Let's assume the following scenario:
 
- * Your device as the mac aa:bb:cc:dd:ee:ff, it try to connect from the switch with IP 192.168.0.10 via MAC authentication,
+ * Your device has the mac aa:bb:cc:dd:ee:ff, it try to connect from the switch with IP 192.168.0.10 via MAC authentication,
  you are supposed to be accepted and redirected to the Portal Profile: MACAuth.
  
 Now is the request from your device coming through in the RADIUS log?
@@ -416,10 +416,19 @@ If the request is not here, you will need to look at the following:
  
 When this has been fixed you should receive the RADIUS request from the client. Now what is the status of this one? 
 
-If it is `Reject` try to see what is the `Reason' for it by clicking `Details'. If the message is not explicit enough, you could select the tab `RADIUS' nad have the full RADIUS Request and Reply details. that should allow you to determine what is the reason why the device could not connect.
+If it is `Reject` try to see what is the `Reason' for it by clicking `Details'. If the message is not explicit enough, you could select the tab `RADIUS' and have the full RADIUS Request and Reply details. That should allow you to determine what is the reason why the device could not connect.
+
+Once authenticate via RADIUS, you can look in logs/packetfence.log, you should see a line like this:
+
+----
+httpd.aaa(5417) INFO: [mac:aa:bb:cc:dd:ee:ff] Instantiate profile MACAuth (pf::Portal::ProfileFactory::_from_profile)
+----
+
+This mean that the device should be able to see the portal. Now if the user still cannot see it, you can verify if the device hit the portal via logs/httpd.portal.access, you need the IP of the device to do so. In this log file, search for the IP of the device and a 'GET' request.
 
 Let's now imagine the same scenario but the device want to connect in EAP-TLS where there is an auto register filter.
 
 The connection seems to fail from the device, using the same method, you will need to make sure that the mode of authentication (Computer or User) is matching the certificate deployed on the client. Also if there is a fail handshake between the certificates, that will appear as the fail reasons, for instance not issued by the same CA.
 
-If your RADIUS connection was valid, you should know have a line the Audit Log wher ethe status should be reg instead of unreg. Looking though the `Details' youshould see in the tab RADIUS the auto register that have been returned.
+If your RADIUS connection was valid, you should know have a line the Audit Log where the status should be reg instead of unreg. Looking though the `Details' you should see in the tab RADIUS the auto register that have been returned.
+
