@@ -452,9 +452,9 @@ Returns the current sessionid for a given mac address
 
 sub node_accounting_current_sessionid {
     my ($mac) = @_;
-    if(my $entry = pf::accounting->cache->get($mac)){
-        return $entry->{'Acct-Session-Id'};
-    }
+    #if(my $entry = pf::accounting->cache->get($mac)){
+    #    return $entry->{'Acct-Session-Id'};
+    #}
     my $query = db_query_execute(ACCOUNTING, $accounting_statements, 'acct_current_sessionid_sql', $mac) || return (0);
     my ($val) = $query->fetchrow_array();
     $query->finish();
